@@ -22,7 +22,7 @@
 
   const chatbotScript = document.createElement("script");
   chatbotScript.src =
-    "https://raw.githubusercontent.com/shamim-s/novvi-chatbot/main/dist/assets/index-Buuc5GvV.js";
+    "https://raw.githubusercontent.com/shamim-s/novvi-chatbot/main/dist/assets/index-4GLHFfga.js";
   chatbotScript.onload = () => {
     console.log("Chatbot JS loaded");
     if (window.loadNovviChatbot) {
