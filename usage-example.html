@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <!-- Add React and ReactDOM from CDN -->
+    <script
+      crossorigin
+      src="https://unpkg.com/react@18/umd/react.production.min.js"
+    ></script>
+    <script
+      crossorigin
+      src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"
+    ></script>
+
+    <!-- Add your built chatbot JS file -->
+    <script src="https://your-hosting-url.com/chatbot.js"></script>
+  </head>
+  <body>
+    <script>
+      // Initialize the chatbot with optional config
+      window.NovviChatbot.init({
+        // Optional translations
+        translations: {
+          en: {
+            welcome: "Custom welcome message",
+            // ... other translation keys
+          },
+        },
+        // Optional initial language
+        initialLanguage: "en",
+      });
+    </script>
+  </body>
+</html>

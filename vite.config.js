@@ -7,5 +7,11 @@ export default defineConfig({
   plugins: [react(), tailwindcss()],
   build: {
     outDir: "dist",
+    rollupOptions: {
+      output: {
+        entryFileNames: "bundle.js",
+        assetFileNames: "assets/[name][extname]",
+      },
+    },
   },
 });

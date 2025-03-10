@@ -1,0 +1,3 @@
+[submodule "server"]
+	path = server
+	url = https://github.com/shamim-s/novvi_chatbot_server

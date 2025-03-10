@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 
-const Chatbot = () => {
+const Chatbot = ({ config }) => {
   const [messages, setMessages] = useState([]);
   const [language, setLanguage] = useState(null);
   const [showLeadForm, setShowLeadForm] = useState(false);
@@ -17,7 +17,7 @@ const Chatbot = () => {
 
   const [visible, setVisible] = useState(false);
 
-  const translations = {
+  let translations = {
     en: {
       welcome: "Greetings from Novvi Properties. How can I assist you today?",
       propertyPurpose: "What is the purpose of your property investment?",
@@ -88,6 +88,19 @@ const Chatbot = () => {
       ]);
     }
   }, [language]);
+
+  // Add configuration handling
+  useEffect(() => {
+    if (config) {
+      // Apply any custom configuration
+      if (config.translations) {
+        translations = { ...translations, ...config.translations };
+      }
+      if (config.initialLanguage) {
+        setLanguage(config.initialLanguage);
+      }
+    }
+  }, [config]);
 
   const scrollToBottom = () => {
     if (messagesEndRef.current) {
@@ -308,7 +321,7 @@ const Chatbot = () => {
     e.preventDefault();
     console.log(leadData);
     // try {
-    //   const response = await fetch("http://localhost:5000/api/leads", {
+    //   const response = await fetch("https://novvi-chatbot-server.onrender.com/api/leads", {
     //     method: "POST",
     //     headers: { "Content-Type": "application/json" },
     //     body: JSON.stringify({
@@ -356,7 +369,7 @@ const Chatbot = () => {
         visible
           ? `lg:w-[450px] md:w-[450px] w-[370px]  h-[600px] shadow-lg`
           : "w-[60px] h-[60px] shadow-none flex items-center justify-center"
-      } bg-[#fff] rounded-lg absolute bottom-5 right-5`}
+      } bg-[#fff] rounded-lg fixed z-[999] bottom-5 right-5`}
     >
       <div
         onClick={() => handleVisibilityChange()}
@@ -972,6 +985,22 @@ const Chatbot = () => {
       </div>
     </div>
   );
+};
+
+// Add initialization code
+window.NovviChatbot = {
+  init: function (config) {
+    const chatbotContainer = document.createElement("div");
+    chatbotContainer.id = "novvi-chatbot-container";
+    document.body.appendChild(chatbotContainer);
+
+    const root = ReactDOM.createRoot(chatbotContainer);
+    root.render(
+      <React.StrictMode>
+        <Chatbot config={config} />
+      </React.StrictMode>
+    );
+  },
 };
 
 export default Chatbot;
