@@ -987,19 +987,20 @@ const Chatbot = ({ config }) => {
   );
 };
 
-// Add initialization code
+// Update initialization code at bottom of file
 window.NovviChatbot = {
   init: function (config) {
-    const chatbotContainer = document.createElement("div");
-    chatbotContainer.id = "novvi-chatbot-container";
-    document.body.appendChild(chatbotContainer);
+    const container = config.container
+      ? document.getElementById(config.container)
+      : document.createElement("div");
 
-    const root = ReactDOM.createRoot(chatbotContainer);
-    root.render(
-      <React.StrictMode>
-        <Chatbot config={config} />
-      </React.StrictMode>
-    );
+    if (!config.container) {
+      container.id = "novvi-chatbot-container";
+      document.body.appendChild(container);
+    }
+
+    const root = ReactDOM.createRoot(container);
+    root.render(<Chatbot config={config} />);
   },
 };
 

@@ -1,7 +1,11 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <!-- Add React and ReactDOM from CDN -->
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Novvi Chatbot Demo</title>
+
+    <!-- React Production CDN -->
     <script
       crossorigin
       src="https://unpkg.com/react@18/umd/react.production.min.js"
@@ -11,22 +15,37 @@
       src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"
     ></script>
 
-    <!-- Add your built chatbot JS file -->
-    <script src="https://your-hosting-url.com/chatbot.js"></script>
+    <!-- Chatbot Bundle -->
+    <script src="dist/bundle.js"></script>
+
+    <style>
+      body {
+        margin: 0;
+        padding: 20px;
+        font-family: system-ui, -apple-system, sans-serif;
+      }
+    </style>
   </head>
   <body>
+    <h1>Novvi Chatbot Demo</h1>
+    <div id="novvi-chatbot-container"></div>
+
     <script>
-      // Initialize the chatbot with optional config
-      window.NovviChatbot.init({
-        // Optional translations
-        translations: {
-          en: {
-            welcome: "Custom welcome message",
-            // ... other translation keys
-          },
-        },
-        // Optional initial language
-        initialLanguage: "en",
+      document.addEventListener("DOMContentLoaded", function () {
+        try {
+          window.NovviChatbot.init({
+            translations: {
+              en: {
+                welcome:
+                  "Welcome to Novvi Properties! How can I assist you today?",
+              },
+            },
+            initialLanguage: "en",
+            container: "novvi-chatbot-container",
+          });
+        } catch (error) {
+          console.error("Failed to initialize chatbot:", error);
+        }
       });
     </script>
   </body>
