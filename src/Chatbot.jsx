@@ -1,4 +1,24 @@
 import { useState, useEffect, useRef } from "react";
+import { createRoot } from "react-dom/client";
+
+// Add error boundary component
+class ChatbotErrorBoundary extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { hasError: false };
+  }
+
+  static getDerivedStateFromError(error) {
+    return { hasError: true };
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return <div>Something went wrong loading the chatbot.</div>;
+    }
+    return this.props.children;
+  }
+}
 
 const Chatbot = ({ config }) => {
   const [messages, setMessages] = useState([]);
@@ -990,17 +1010,39 @@ const Chatbot = ({ config }) => {
 // Update initialization code at bottom of file
 window.NovviChatbot = {
   init: function (config) {
-    const container = config.container
-      ? document.getElementById(config.container)
-      : document.createElement("div");
-
-    if (!config.container) {
-      container.id = "novvi-chatbot-container";
-      document.body.appendChild(container);
+    // Wait for DOM to be ready
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", () =>
+        this.mountChatbot(config)
+      );
+    } else {
+      this.mountChatbot(config);
     }
+  },
 
-    const root = ReactDOM.createRoot(container);
-    root.render(<Chatbot config={config} />);
+  mountChatbot: function (config) {
+    try {
+      const container = config.container
+        ? document.getElementById(config.container)
+        : document.createElement("div");
+
+      if (!config.container) {
+        container.id = "novvi-chatbot-container";
+        document.body.appendChild(container);
+      }
+
+      // Clear container first
+      container.innerHTML = "";
+
+      const root = createRoot(container);
+      root.render(
+        <ChatbotErrorBoundary>
+          <Chatbot config={config} />
+        </ChatbotErrorBoundary>
+      );
+    } catch (error) {
+      console.error("Failed to initialize chatbot:", error);
+    }
   },
 };
 
